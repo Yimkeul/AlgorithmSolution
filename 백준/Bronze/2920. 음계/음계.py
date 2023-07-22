@@ -10,12 +10,8 @@ def isDescending (arr):
             return False
     return True
         
-    
-    
-
-
-
 arr = list(map(int,input().split()))
+
 if isAscending(arr):
     print("ascending")
 elif isDescending(arr):
