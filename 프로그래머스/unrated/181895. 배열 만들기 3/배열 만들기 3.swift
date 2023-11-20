@@ -6,9 +6,10 @@ func solution(_ arr:[Int], _ intervals:[[Int]]) -> [Int] {
         let a = interval[0]
         let b = interval[1]
         var temp = arr[ a ... b]
-        for i in temp {
-            ans.append(i)
-        }
+        ans += temp
+        // for i in temp {
+        //     ans.append(i)
+        // }
         
     }
     return ans
