@@ -10,7 +10,7 @@ import Foundation
 func solution(_ park: [String], _ routes: [String]) -> [Int] {
     let rows = park.count
     let cols = park[0].count
-    print(rows,cols)
+
     var startRow = 0
     var startCol = 0
 
