@@ -1,28 +1,30 @@
 import Foundation
-func canFormGoal(_ cards1: [String], _ cards2: [String], _ goal: [String], _ index1: Int, _ index2: Int, _ targetIndex: Int) -> Bool {
-    
-    if targetIndex >= goal.count {
-        return true
-    }
-    
-    var result = false
-    
-    // 첫 번째 카드 뭉치의 단어를 사용할 수 있는 경우
-    if index1 < cards1.count && cards1[index1] == goal[targetIndex] {
-        result = result || canFormGoal(cards1, cards2, goal, index1 + 1, index2, targetIndex + 1)
-    }
-    
-    if index2 < cards2.count && cards2[index2] == goal[targetIndex] {
-        result = result || canFormGoal(cards1, cards2, goal, index1, index2 + 1, targetIndex + 1)
-    }
-    
-    return result
-}
 
-func solution(_ cards1: [String], _ cards2: [String], _ goal: [String]) -> String {
-    if canFormGoal(cards1, cards2, goal, 0, 0, 0) {
-        return "Yes"
-    } else {
-        return "No"
-    }
+func solution(_ cards1:[String], _ cards2:[String], _ goal:[String]) -> String {
+    var cards1 = cards1
+    var cards2 = cards2
+       for target in goal {
+        var one = 0
+        var two = 0
+        if cards1.firstIndex(of: target) != nil {
+            one = cards1.firstIndex(of: target)!
+            // print("cards1 : ", one)
+            if one != 0 {
+                return "No"
+            } else {
+                cards1.removeFirst()    
+            }
+        }
+           
+        if cards2.firstIndex(of: target) != nil {
+            two = cards2.firstIndex(of: target)!
+            // print("cards2 : ",two)
+            if two != 0 {
+                return "No"
+            } else {
+                cards2.removeFirst()    
+            }
+        }
+       }
+    return "Yes"
 }
