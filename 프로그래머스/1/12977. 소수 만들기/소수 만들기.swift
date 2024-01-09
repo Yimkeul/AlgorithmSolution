@@ -18,11 +18,11 @@ func solution(_ nums:[Int]) -> Int {
 func combi(_ array: [Int], _ pickCount: Int, _ index: Int, _ tempArray: [Int], _ combsArray: inout [[Int]]) -> [[Int]] {
     if tempArray.count == pickCount {
         combsArray.append(tempArray)
-        return []
-    }
-    
+        
+    } else {
     for i in index ..< array.count {
         let _ = combi(array, pickCount, i + 1, tempArray + [array[i]], &combsArray)
+        }    
     }
     return combsArray
 }
