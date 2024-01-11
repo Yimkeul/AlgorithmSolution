@@ -27,12 +27,8 @@ func solution(_ n:Int, _ arr1:[Int], _ arr2:[Int]) -> [String] {
         var map1Text = getChar(map1[i])
         var map2Text = getChar(map2[i])
         var transText = ""
-        for j in 0 ..< n {
-            if map1Text[j] == "0" && map1Text[j] == map2Text[j] {
-                transText += " "
-            } else {
-                transText += "#"
-            }
+        for j in 0 ..< n {            
+            transText += (map1Text[j] == "1" || map2Text[j] == "1") ? "#" : " "
         }
         answer.append(transText)
     }
