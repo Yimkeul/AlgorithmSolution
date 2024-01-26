@@ -19,12 +19,8 @@ func solution(_ cacheSize:Int, _ cities:[String]) -> Int {
             time += 1
         } else {
             // 캐시에 없는 경우 가장 하단 인덱스 pop 하고 cache에 푸쉬
-            if cache.isEmpty {
-                cache.append(data)    
-            } else {
-                cache.removeFirst()    
-                cache.append(data)
-            }
+            cache.removeFirst()    
+            cache.append(data)
             time += 5           
         }
     }
