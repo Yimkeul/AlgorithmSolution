@@ -3,14 +3,8 @@ import Foundation
 func solution(_ n:Int, _ k:Int) -> Int {
     var trans = String(n, radix: k)
     var ary = trans.split { $0 == "0" }.map { Int($0)! }
-    var ans:Int = 0
-    for i in ary {
-        if isPrime(i) {
-            ans += 1
-        } 
-    }
-    
-    
+    var ans:Int = ary.reduce(0) { $0 + (isPrime($1) ? 1 : 0) }
+   
     return ans
 }
 
