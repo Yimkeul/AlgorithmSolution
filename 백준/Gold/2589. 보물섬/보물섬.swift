@@ -1,91 +1,52 @@
 func Q_2589() {
 
-    let way = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
     let rc = readLine()!.split { $0 == " " }.map { Int($0)! }
-    let (r, c) = (rc[0], rc[1])
+    let (rows, cols) = (rc[0], rc[1])
     var grid = [[String]]()
-    for _ in 0 ..< r {
+    for _ in 0 ..< rows {
         let line = readLine()!.map { String($0) }
         grid.append(line)
     }
 
-    var visited = Array(repeating: Array(repeating: false, count: c), count: r)
-    var customGrid = Array(repeating: Array(repeating: 0, count: c), count: r)
-    var customIndex = 1
-
-    for i in 0 ..< r {
-        for j in 0 ..< c {
-            if grid[i][j] == "L" && !visited[i][j] {
-                dfs(i, j, &visited, customIndex)
-                customIndex += 1
-            }
-        }
+    func isValid(_ x: Int, _ y: Int) -> Bool {
+        return x >= 0 && x < rows && y >= 0 && y < cols
     }
 
-//    for i in 0 ..< r {
-//        for j in 0 ..< c {
-//            print(customGrid[i][j], terminator: " ")
-//        }
-//        print()
-//    }
+    func bfs(_ startX: Int, _ startY: Int) -> Int {
+        var queue = [(startX, startY, 0)]
+        var visited = Array(repeating: Array(repeating: false, count: cols), count: rows)
+        visited[startX][startY] = true
+        var maxDistance = 0
 
-
-    func isVaild(_ x: Int, _ y: Int) -> Bool {
-        return x >= 0 && x < r && y >= 0 && y < c
-    }
-
-
-    func dfs(_ x: Int, _ y: Int, _ visited: inout[[Bool]], _ index: Int) {
-        if visited[x][y] {
-            return
-        }
-        customGrid[x][y] = index
-        visited[x][y] = true
-        for (dx, dy) in way {
-            let nx = x + dx
-            let ny = y + dy
-            if isVaild(nx, ny) && grid[nx][ny] == "L" && !visited[nx][ny] {
-                dfs(nx, ny, &visited, index)
-            }
-        }
-    }
-
-
-    var queue = [(Int, Int, Int)]()
-    var answer = Int.min
-    func bfs(_ x: Int, _ y: Int) -> Int {
-        queue.append((x, y, 0))
-        var visited = Array(repeating: Array(repeating: false, count: c), count: r)
-        visited[x][y] = true
-        var maxdis = 0
         while !queue.isEmpty {
-            let (qx, qy, qcnt) = queue.removeFirst()
-            for (dx, dy) in way {
-                let nx = qx + dx
-                let ny = qy + dy
-                let ncnt = qcnt + 1
-                if isVaild(nx, ny) {
-                    if customGrid[nx][ny] == customGrid[x][y] && !visited[nx][ny] {
-//                        print(customGrid[nx][ny], customGrid[x][y], "(\(nx),\(ny))" , ncnt)
-                        maxdis = max(maxdis, ncnt)
-                        visited[nx][ny] = true
-                        queue.append((nx, ny, ncnt))
-                    }
+            let (x, y, distance) = queue.removeFirst()
+            maxDistance = max(maxDistance, distance)
+
+            for (dx, dy) in directions {
+                let nx = x + dx
+                let ny = y + dy
+
+                if isValid(nx, ny) && !visited[nx][ny] && grid[nx][ny] == "L" {
+                    visited[nx][ny] = true
+                    queue.append((nx, ny, distance + 1))
                 }
             }
+        }
 
-        }
-        return maxdis
+        return maxDistance
     }
-    for i in 0 ..< r {
-        for j in 0 ..< c {
-            if customGrid[i][j] != 0 {
-                answer = max(answer,bfs(i, j))
+
+    var answer = 0
+    for i in 0 ..< rows {
+        for j in 0 ..< cols {
+            if grid[i][j] == "L" {
+                answer = max(answer, bfs(i, j))
             }
-//            print("------------------------------")
         }
     }
+
     print(answer)
 }
 Q_2589()
