@@ -1,54 +1,56 @@
-var k = Int(String(readLine()!))!
- var wh = readLine()!.split(separator: " ").map{Int(String($0))!}
- var w = wh[0]
- var h = wh[1]
- var arr = [[Int]]()
- var dx = [-1, 1, 0, 0]
- var dy = [0, 0, -1, 1]
- var horseDx = [-2, -1, -2, -1, 1, 2, 2, 1]
- var horseDy = [-1, -2, 1, 2, -2, -1, 1, 2]
+func Q_1600() {
+    let direction = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    let special = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+    let K = Int(readLine()!)!
+    let WH = readLine()!.split { $0 == " " }.map { Int($0)! }
+    let (W, H) = (WH[0], WH[1])
+    var grid = [[Int]]()
 
- for _ in 0..<h{
-     arr.append(readLine()!.split(separator: " ").map{Int(String($0))!})
- }
+    var queue = [(Int, Int, Int, Int)]()
 
- func bfs() -> Int{
-     var queue = [(Int, Int, Int, Int)]()//x, y, 이동횟수, k
-     var visited = Array(repeating: Array(repeating: Array(repeating: false, count: 31), count: 201), count: 201)
-     queue.append((0, 0, 0, k))
-     visited[0][0][k] = true
-     var result = -1
-     var idx = 0
-     while queue.count > idx{
-         let (x, y, move, k) = queue[idx]
-         idx += 1
-         if x == h - 1 && y == w - 1 {
-             result = move
-             break
-         }
+    for _ in 0 ..< H {
+        let line = readLine()!.split { $0 == " " }.map { Int($0)! }
+        grid.append(line)
+    }
+    print(bfs())
 
-         if k > 0 {
-             for i in 0..<8{
-                 let nx = horseDx[i] + x
-                 let ny = horseDy[i] + y
+    func isValid(_ x: Int, _ y: Int, _ visited: inout [[[Bool]]], _ k: Int) -> Bool {
+        return x >= 0 && x < H && y >= 0 && y < W && !visited[x][y][k] && grid[x][y] != 1
+    }
+    func bfs() -> Int {
+        // x, y, distance, k
+        queue.append((0, 0, 0, K))
+//        var visited = Array(repeating: Array(repeating: Array(repeating: false, count: K), count: W), count: H)
+        var visited = Array(repeating: Array(repeating: Array(repeating: false, count: 31), count: 201), count: 201)
+        var idx = 0
+        while queue.count > idx {
+            let (qx, qy, qd, qk) = queue[idx]
+            idx += 1
+            if (qx, qy) == (H - 1, W - 1) {
+                return qd
+            }
+            if qk > 0 {
+                for (dx, dy) in special {
+                    let nx = qx + dx
+                    let ny = qy + dy
+                    if isValid(nx, ny, &visited, qk - 1) {
+                        queue.append(((nx, ny, qd + 1, qk - 1)))
+                        visited[nx][ny][qk - 1] = true
+                    }
 
-                 if nx < 0 || ny < 0 || nx >= h || ny >= w {continue}
-                 if arr[nx][ny] == 1 || visited[nx][ny][k - 1] {continue}
-                 queue.append((nx, ny, move + 1, k - 1))
-                 visited[nx][ny][k - 1] = true
-             }
-         }
-         for i in 0..<4{
-             let nx = x + dx[i]
-             let ny = y + dy[i]
-             if nx < 0 || ny < 0 || nx >= h || ny >= w {continue}
-             if arr[nx][ny] == 1 || visited[nx][ny][k] {continue}
-             queue.append((nx, ny, move + 1, k))
-             visited[nx][ny][k] = true
-         }
+                }
+            }
+            for (dx, dy) in direction {
+                let nx = qx + dx
+                let ny = qy + dy
+                if isValid(nx, ny, &visited, qk) {
+                    queue.append(((nx, ny, qd + 1, qk)))
+                    visited[nx][ny][qk] = true
+                }
+            }
+        }
+        return -1
+    }
 
-
-     }
-     return result
- }
- print(bfs())
+}
+Q_1600()
