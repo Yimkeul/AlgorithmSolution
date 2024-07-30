@@ -1,49 +1,37 @@
-import Foundation 
+    let n = Int(readLine()!)!
+    var parent = [Int](0...n)
+    var rank = Array(repeating: 1, count: n + 1)
 
-var parents = [Int]()
-    var rank = Array(repeating: 1, count: 300_001)
-
-    func initParents(_ n: Int) {
-        parents = (0...n).map{ $0 }
+    func find(_ x: Int) -> Int {
+        if parent[x] == x {
+            return x
+        }
+        parent[x] = find(parent[x])
+        return parent[x]
     }
 
-    func find(_ n: Int) -> Int {
-        if parents[n] == n { return n }
-        
-        parents[n] = find(parents[n])
-        
-        return parents[n]
-    }
-
-    func union(a: Int, b: Int) {
-        var pa = find(a), pb = find(b)
-        
-        if pa == pb { return }
-        
-        if rank[pa] < rank[pb] { swap(&pa, &pb) }
-        parents[pb] = pa
-        rank[pa] += rank[pb]
-    }
-
-    func solution() {
-        let N = Int(readLine()!)!
-        
-        initParents(N)
-        
-        for _ in 0..<N-2 {
-            let input = readLine()!.split(separator: " ").map{ Int(String($0))! }
-            let A = input[0]
-            let B = input[1]
-            
-            union(a: A, b: B)
+    func union(_ x: Int, _ y: Int) {
+        var (fx, fy) = (find(x), find(y))
+        if fx == fy {
+            return
         }
         
-        for i in 2...N {
-            if find(1) != find(i) {
-                print(1, i)
-                break
-            }
-        }
+        if rank[fx] < rank[fy] { swap(&fx, &fy) }
+        parent[fy] = fx
+        rank[fx] += rank[fy]
     }
 
-    solution()
+
+
+    for _ in 0 ..< n - 2 {
+        let line = readLine()!.split { $0 == " " }.map { Int($0)! }
+        let (a, b) = (line[0], line[1])
+        union(a, b)
+    }
+
+    for i in 2...n {
+        if find(1) != find(i) {
+            print(1,i)
+            break
+        }
+    }
