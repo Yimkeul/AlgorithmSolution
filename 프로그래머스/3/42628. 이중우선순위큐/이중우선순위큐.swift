@@ -38,11 +38,5 @@ func solution(_ operations:[String]) -> [Int] {
         ans.append(queue.min()!)
     }
     
-    
-    
-    
-    
-    
-    
     return ans
 }
