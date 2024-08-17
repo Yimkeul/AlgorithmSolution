@@ -15,15 +15,10 @@ func solution(_ jobs:[[Int]]) -> Int {
             }
         }
 
-        // print(queue)
         let process = queue.removeFirst()
         let (start, end) = (process[0], process[1])
-        // print("TTT: ",now,start,end)
         now += start > now ? start - now + end : end
-        let test = start <= now ? now - start :  end
-        // print(now, "::: ", now - start, "||| ", now + start)
-        ans += test
-        // print(now,":::",test,"|||", ans)
+        ans += start <= now ? now - start :  end
         
     }
     
