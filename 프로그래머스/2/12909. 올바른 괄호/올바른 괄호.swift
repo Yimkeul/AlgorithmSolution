@@ -2,19 +2,25 @@ import Foundation
 
 func solution(_ s:String) -> Bool
 {
-    var stack = [Character]()
+    var ans:Bool = true
     
-    for c in s {
-        if c == "(" {
+    var galhos = s.map { String($0) }
+    
+    var stack:[String] = []
+    
+    for s in galhos {
+        if s == "(" {
             stack.append("(")
         } else {
-            if !stack.isEmpty { 
-                stack.popLast() 
-            }  else {
-                stack.append(")")
-            }         
+            if stack.isEmpty {
+                return false
+            } else {
+                stack.removeLast()
+            }
         }
     }
-    // print(stack)
-    return stack.isEmpty ? true : false
+    
+    ans = stack.isEmpty ? true : false
+    
+    return ans
 }
