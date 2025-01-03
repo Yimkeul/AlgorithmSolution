@@ -1,16 +1,11 @@
-func solution(_ n: Int) -> Int {
-    var memo = Array(repeating: -1, count: n + 1)
-    return fibo(n, &memo)
+func solution(_ n:Int) -> Int {
+    return fibo(n) 
 }
-
-func fibo(_ n: Int, _ memo: inout [Int]) -> Int {
-    if n == 0 { return 0 }
-    if n == 1 { return 1 }
+func fibo(_ n: Int) -> Int{
+    var cache: [Int] = [0, 1]
     
-    if memo[n] != -1 {
-        return memo[n]
+    for num in 2...n {
+        cache.append(cache[num - 1] % 1234567 + cache[num - 2] % 1234567)
     }
-    
-    memo[n] = (fibo(n - 1, &memo) + fibo(n - 2, &memo)) % 1234567
-    return memo[n]
+    return cache[n] % 1234567
 }
