@@ -1,23 +1,34 @@
 import Foundation
 
-func solution(_ cards:[Int]) -> Int {
-    var opened: Set<Int> = []
-    var len:[Int] = []
+func solution(_ cards: [Int]) -> Int {
+    var visited = Array(repeating: false, count: cards.count)
+    var groupSizes = [Int]()
     
-    for i in 0 ..< cards.count {
-        if opened.contains(i) { continue }
-        var now = i
-        var count = 0 
-        while !opened.contains(now) {
-            opened.insert(now)
-            count += 1
-            now = cards[now] - 1
+    func dfs(_ index: Int) -> Int {
+        var size = 0
+        var currentIndex = index
+        
+        while !visited[currentIndex] {
+            visited[currentIndex] = true
+            size += 1
+            currentIndex = cards[currentIndex] - 1 
         }
-        len.append(count)
+        
+        return size
     }
-    len = len.sorted  { $0 > $1 }
     
-
+    for i in 0..<cards.count {
+        if !visited[i] {
+            let groupSize = dfs(i)
+            groupSizes.append(groupSize)
+        }
+    }
     
-    return len.count > 1 ? len[0] * len[1] : 0
+    groupSizes.sort(by: >)
+    
+    if groupSizes.count < 2 {
+        return 0 
+    }
+    
+    return groupSizes[0] * groupSizes[1]
 }
