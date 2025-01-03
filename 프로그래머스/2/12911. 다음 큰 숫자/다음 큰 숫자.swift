@@ -2,17 +2,25 @@ import Foundation
 
 func solution(_ n:Int) -> Int
 {
+    var ans: Int = 0
     
-    let oneCount = String(n, radix: 2).filter {$0 == "1"}.count
+    var firstN = n
+    var firstNBinary = String(n, radix: 2)
+    // print(firstNBinary)
+    var firstNCount = firstNBinary.map { String($0) }.filter { $0 == "1"}.count
+    // print(firstNCount)
     
-    var num = n
-    while true {
-        num += 1
-        var numCount = String(num, radix: 2).filter {$0 == "1"}.count
-        if oneCount == numCount {
-            return num
+    
+    
+    while true { 
+        firstN += 1
+        var tempNBinary = String(firstN, radix: 2)
+        var tempNCount = tempNBinary.map { String($0) }.filter { $0 == "1" }.count
+        if firstNCount == tempNCount {
+            ans = firstN
+            break
         }
+        
     }
-    
-    
+    return ans
 }
