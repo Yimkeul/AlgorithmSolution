@@ -1,21 +1,32 @@
-var memo = [Int: Int]()
+// import Foundation
 
-func solution(_ n:Int) -> Int {
-    return Fibo(n)%1234567
-}
+// func solution(_ n:Int) -> Int {
+    
+//     var dp = [Int](repeating: 0, count: n + 1)
+    
+//     dp[0] = 1
+//     dp[1] = 2
+    
+//     for i in 2 ..< n {
+//         dp[i] = (dp[i - 2] + dp[i - 1]) % 1234567
+//     }
+    
+//     return dp[n - 1] 
+// }
 
-func Fibo(_ n:Int) -> Int {
-    if n == 1 {
-        return 1
-    } else if n == 2 {
-        return 2
+import Foundation
+
+func solution(_ n: Int) -> Int {
+    if n == 1 { return 1 }
+    if n == 2 { return 2 }
+
+    var dp = [Int](repeating: 0, count: n + 1)
+    dp[1] = 1
+    dp[2] = 2
+
+    for i in 3...n {
+        dp[i] = (dp[i - 1] + dp[i - 2]) % 1234567
     }
-        if let result = memo[n] {
-        return result
-    }
 
-    let result = (Fibo(n - 1) + Fibo(n - 2)) % 1234567
-    memo[n] = result
-
-    return result
+    return dp[n]
 }
