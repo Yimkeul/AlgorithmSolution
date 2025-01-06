@@ -1,28 +1,22 @@
 import Foundation
 
-func solution(_ elements:[Int]) -> Int {
-    
+func solution(_ elements: [Int]) -> Int {
+    var sums = Set<Int>() // 중복 제거를 위한 Set
     let n = elements.count
-    var prefixSum = Array(repeating: 0, count: n * 2 + 1)
-    var answerSet = Set<Int>()
 
-    // 원형 수열을 두 번 이어붙여서 새로운 배열 생성
-    let doubledElements = elements + elements
+    // 배열을 두 번 이어 붙여 원형 배열처럼 처리
+    let extendedElements = elements + elements
 
-    // 접두사 합 배열 계산
-    for i in 1..<(n * 2 + 1) {
-        prefixSum[i] = prefixSum[i - 1] + doubledElements[i - 1]
-    }
-
-    // 연속 부분 수열의 합 계산
+    // 슬라이딩 윈도우를 사용해 부분 수열 합 계산
     for length in 1...n {
-        for start in 0..<n {
-            let end = start + length
-            let sum = prefixSum[end] - prefixSum[start]
-            answerSet.insert(sum)
+        var currentSum = extendedElements[0..<length].reduce(0, +) // 초기 합 계산
+        sums.insert(currentSum)
+
+        for start in 1..<n {
+            currentSum = currentSum - extendedElements[start - 1] + extendedElements[start + length - 1]
+            sums.insert(currentSum)
         }
     }
 
-    return answerSet.count
+    return sums.count
 }
-
