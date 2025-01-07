@@ -1,17 +1,19 @@
 import Foundation
 
 func solution(_ citations:[Int]) -> Int {
-    var hindex = 0
+    var ans = 0
+    var over = 0
+    var under = 0
     
-    let citations = citations.sorted(by: >) 
-    
-    for i in 0 ..< citations.count {
-        if citations[i] >= i + 1 {
-            hindex = i + 1
-        } else {
-            break
+    for h in 0 ..< citations.max()! {
+        over = citations.filter { $0 >= h }.count
+        under = citations.filter { $0 < h }.filter { $0 <= h }.count
+        
+        if h <= over && citations.count - over == under {
+            ans = max(h,ans)
         }
+        // print(citations.filter { $0 < h }.filter { $0 <= h })
+        // print(h, over, citations.count - over, under, ans)
     }
-    
-    return hindex
+    return ans
 }
