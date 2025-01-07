@@ -1,30 +1,32 @@
 import Foundation
 
-func solution(_ want: [String], _ number: [Int], _ discount: [String]) -> Int {
-    var result = 0
+func solution(_ want:[String], _ number:[Int], _ discount:[String]) -> Int {
+    var dic = [String: Int]()
     
-    var wanted:[String:Int] = [:]
     for i in 0 ..< want.count {
-        wanted[want[i]] = number[i]
+        dic[want[i]] = number[i]
     }
     
-    for i in 0..<discount.count {
-        var temp = wanted   
-        // print("tt : " ,i + 10, discount.count)
-        for day in i ..< i + 10 where i + 10 <= discount.count {
-            guard let value =  temp[discount[day]] else {
-                continue
+    var ans = 0
+    
+    var find = false
+    
+    for i in 0 ... discount.count - 10 {
+        var copydic = dic
+        for j in i ..< i + 10 {
+            if copydic[discount[j]] != nil {
+                copydic[discount[j]]! -= 1
             }
-            temp[discount[day]] = value - 1
         }
         
+        find = !copydic.values.contains { $0 > 0 }
         
-        let allZeros = temp.values.allSatisfy { $0 == 0 }
-        if allZeros {
-            result += 1
+        if find {
+            ans +=  1
         }
-        // print(temp , i, result)
     }
-
-    return result
+    
+    
+    
+    return ans
 }
