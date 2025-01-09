@@ -1,19 +1,38 @@
 import Foundation
 
 func solution(_ s:String) -> [Int] {
-    var str = s
-    str = str.replacingOccurrences(of: "{", with: "")
-    str = str.replacingOccurrences(of: "}",  with: "")
-    var ary:[Int] = str.split { $0 == ","}.map { Int($0)! }
+    var s = s
+    s.removeFirst()
+    s.removeLast()
+
+    var array = [[Int]]()
+    var answer = [Int]()
     
-    var dic: [Int:Int] = [:]
-    
-    for i in ary {
-        dic[i, default: 0] += 1
+    var temp = ""
+    for c in s {
+        if c == "{" {
+            temp = ""
+        } else if c == "}" {
+            let subArray = temp.split { $0 == ","}.map { Int($0)! }
+            array.append(subArray)
+        } else {
+            temp += String(c)
+        }
     }
     
-    var ans = dic.keys.sorted { dic[$0]! > dic[$1]!}
+    array.sort { $0.count < $1.count}
     
-    return ans
-
+    for tuple in array {
+        for t in tuple {
+            if answer.isEmpty {
+                answer.append(t)
+            } else {
+              if !answer.contains(t) {
+                  answer.append(t)
+              }
+            }
+        }
+    }
+    
+    return answer
 }
