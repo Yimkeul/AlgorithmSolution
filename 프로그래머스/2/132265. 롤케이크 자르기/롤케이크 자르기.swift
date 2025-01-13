@@ -1,46 +1,33 @@
-// import Foundation
-
-// func solution(_ topping:[Int]) -> Int {
-    
-//     var up: [Int] = []
-//     var down: [Int] = topping
-//     var ans: Int = 0
-
-//     for i in 0 ..< topping.count {
-//         if Set(up).count == Set(down).count {
-//             ans += 1
-//         } 
-//         if let firstDown = down.first {
-//             up.append(firstDown)
-//         }
-//             down.removeFirst()
-//     }
-    
-//     return ans
-    
-// }
-
 import Foundation
 
-func solution(_ topping:[Int]) -> Int {
-    if topping.count == 1 {
-        return 0
-    }
+func solution(_ topping: [Int]) -> Int {
     var answer = 0
-    var s1: Set<Int> = []   // 철수
-    var s2: Set<Int> = Set(topping)   // 동생
-    let maxValue = topping.max()!   // 배열의 최대 크기를 지정하기 위해
-    var idxArr = Array(repeating: 0, count: maxValue+5)
-    for i in 0..<topping.count {
-        idxArr[topping[i]] += 1
+    
+    // 왼쪽과 오른쪽의 고유 토핑 종류를 저장할 집합
+    var leftSet = Set<Int>()
+    var rightMap = [Int: Int]()
+    
+    // 초기 상태에서 모든 토핑을 오른쪽에 위치
+    for t in topping {
+        rightMap[t, default: 0] += 1
     }
-    for i in 0..<topping.count-1 {
-        s1.insert(topping[i])   // 철수는 토핑 하나 증가        
-        idxArr[topping[i]] -= 1 // 해당 토핑의 개수 하나 감소
-        if idxArr[topping[i]] <= 0 {	// 해당 토핑의 개수가 0 이하이면, s2에는 해당 토핑이 존재하면 안된다.
-            s2.remove(topping[i])	// 동생은 토핑 하나 감소
+    
+    // 토핑을 하나씩 왼쪽으로 옮기면서 고유 종류 비교
+    for t in topping {
+        // 왼쪽 집합에 현재 토핑 추가
+        leftSet.insert(t)
+        
+        // 오른쪽에서 현재 토핑의 개수를 감소
+        if let count = rightMap[t] {
+            if count == 1 {
+                rightMap[t] = nil
+            } else {
+                rightMap[t] = count - 1
+            }
         }
-        if s1.count == s2.count {    // 토핑의 가짓수가 같으면 answer 증가
+        
+        // 왼쪽과 오른쪽의 고유 토핑 개수를 비교
+        if leftSet.count == rightMap.keys.count {
             answer += 1
         }
     }
