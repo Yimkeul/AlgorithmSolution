@@ -1,33 +1,20 @@
-import Foundation
+import Foundation    
 
 func solution(_ n:Int, _ k:Int) -> Int {
-    var trans = String(n, radix: k)
-    var ary = trans.split { $0 == "0" }.map { Int($0)! }
-    var ans:Int = ary.reduce(0) { $0 + (isPrime($1) ? 1 : 0) }
-   
-    return ans
-}
-
-func isPrime(_ number: Int) -> Bool {
-    guard number > 1 else {
-        return false 
+        let change = String(n, radix: k).split { $0 == "0"}.map { Int($0)! }
+        
+        let filtered = change.filter { isPrimeNumber($0) }
+        
+        
+        return filtered.count
     }
-
-    guard number != 2 else {
-        return true 
-    }
-
-    guard number % 2 != 0 else {
-        return false 
-    }
-
-    var i = 3
-    while i * i <= number {
-        if number % i == 0 {
-            return false 
+    
+    func isPrimeNumber(_ n:Int) -> Bool {
+        if n < 2 {
+            return false
         }
-        i += 2 
+        for i in 2 ..< Int(sqrt(Double(n)) + 1) {
+            if n % i == 0 { return false}
+        }
+        return true
     }
-
-    return true
-}
