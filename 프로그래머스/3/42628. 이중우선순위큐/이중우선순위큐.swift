@@ -1,42 +1,29 @@
-import Foundation
+import Foundation    
 
-    func operation(_ C: String, _ dig: Int , _ queue: inout [Int]) {
-        switch C {
+func solution(_ operations: [String]) -> [Int] {
+        var queue = [Int]()
+
+        for oper in operations {
+            let line = oper.split { $0 == " " }.map { String($0) }
+            let (op, value) = (line[0], Int(line[1])!)
+            switch op {
             case "I":
-                queue.append(dig)
+                queue.append(value)
             case "D":
                 if !queue.isEmpty {
-                    if dig == 1 {
-                    let maxIndex = queue.firstIndex(of: queue.max()!)!
-                    queue.remove(at: maxIndex)
-                } else {
-                    let minIndex = queue.firstIndex(of: queue.min()!)!
-                    queue.remove(at: minIndex)
+                    if value == 1 {
+                        if let index = queue.firstIndex(of: queue.max()!) {
+                            queue.remove(at: index)
+                        }
+                    } else {
+                        if let index = queue.firstIndex(of: queue.min()!) {
+                            queue.remove(at: index)
+                        }
+                    }
                 }
-                }
-            default: 
-            break
-        }    
+            default:
+                break
+            }
+        }
+        return queue.isEmpty ? [0, 0] : [queue.max()!, queue.min()!]
     }
-    
-
-func solution(_ operations:[String]) -> [Int] {
-
-    var queue = [Int]()
-    var ans = [Int]()
-    
-    for op in operations {
-        let line = op.split { $0 == " "}
-        let c = String(line[0]), dig = Int(line[1])!
-        operation(c, dig, &queue)
-    }
-    
-    if queue.isEmpty {
-        ans = [0,0]
-    } else {
-        ans.append(queue.max()!)
-        ans.append(queue.min()!)
-    }
-    
-    return ans
-}
