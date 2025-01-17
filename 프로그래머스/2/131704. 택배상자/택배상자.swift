@@ -1,23 +1,25 @@
 import Foundation
 
-func solution(_ order:[Int]) -> Int {
-    var beltStack: [Int] = []
-    var max: Int = 0
-    var count: Int = 0
-    
-    for box in order {
-        if beltStack.last == box {
-            count += 1
-            let _ = beltStack.removeLast()
-        } else if max < box {
-            count += 1
-            for b in max+1..<box {
-                beltStack.append(b)
-            }
-            max = box
+func solution(_ order: [Int]) -> Int {
+    var stack = [Int]()
+    var index = 0
+
+    for box in 1...order.count {
+        if box == order[index] {
+            // 메인 벨트에서 바로 처리 가능
+            index += 1
         } else {
-            break
+            // 보조 벨트에 추가
+            stack.append(box)
+        }
+
+        // 보조 벨트에서 확인 및 처리
+        while !stack.isEmpty && stack.last! == order[index] {
+            stack.removeLast()
+            index += 1
         }
     }
-    return count
+
+    return index
 }
+
