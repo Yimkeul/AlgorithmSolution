@@ -1,69 +1,73 @@
 import Foundation
 
-struct car {
-    let time: String
-    let num: String
-    let state: String
-}
-
-func solution(_ fees:[Int], _ records:[String]) -> [Int] {
-    var record:[(String, [(String, String)])] = []
-
-    var ansBefore = [(String,Int)]()
-    var ans = [Int]()
-
-    func addValue(key: String, value:[(String,String)]) {
-    if let index = record.firstIndex(where: { $0.0 == key }) {
-        record[index].1 += value
-    } else {
-        record.append((key, value))
-    }
-}
-
-
-    for index in records {
-        let item = index.split { $0 == " "}
-        addValue(key: String(item[1]), value: [( String(item[0]), String(item[2]))])
+struct History {
+        let number: String
+        var InTime: String
+        var OutTime: String = timeInvert("23:59")
     }
 
-
-    for index in 0 ..< record.count {
-        if record[index].1.count % 2 == 1 {
-            record[index].1 += [("23:59","OUT")]
-        }
+    struct FeeHistory {
+        let number: String
+        var usingTime: Int
+        var fee: Int = 0
     }
 
-    for index in 0 ..< record.count {
-        var value:Int = 0
-        var addValue:Int = 0
+    func solution(_ fees: [Int], _ records: [String]) -> [Int] {
+        var list: [History] = []
+        var feeList: [FeeHistory] = []
+        var ans:[Int] = []
+        
+        let (baseTime, baseFee, unitTime, unitFee) = (fees[0], fees[1], fees[2], fees[3])
 
-        for money in 0 ..< record[index].1.count {
-            var time:String = String(record[index].1[money].0)
-            var state:String = String(record[index].1[money].1)
 
-             if money % 2 == 1 {
-            value += hTom(String(record[index].1[money].0))  - hTom(String(record[index].1[money - 1].0))
-           }
-        }
-            if value < fees[0] {
-                addValue = fees[1]
-            } else {
-                addValue = fees[1] + Int(ceil(Double(value - fees[0]) / Double(fees[2]))) * fees[3]     
+        for record in records {
+            let data = record.split { $0 == " " }.map { String($0) }
+            let (time, car, type) = (timeInvert(data[0]), data[1], data[2])
+
+            switch type {
+            case "IN":
+                list.append(History(number: car, InTime: time))
+            case "OUT":
+                if let index = list.firstIndex(where: { $0.number == car && $0.OutTime == timeInvert("23:59") }) {
+                    list[index].OutTime = time
+                }
+            default:
+                break
             }
+        }
 
-        ansBefore.append((String(record[index].0), addValue))
+        for record in list {
+            let (car, inTime, outTime) = (record.number, record.InTime, record.OutTime)
+            let time = Int(outTime)! - Int(inTime)!
+
+            if let index = feeList.firstIndex(where: { $0.number == car }) {
+                feeList[index].usingTime += time
+            } else {
+                feeList.append(FeeHistory(number: car, usingTime: time))
+            }
+        }
+
+
+        for item in feeList {
+            let time = item.usingTime
+            let fee = time > baseTime ? baseFee + Int(ceil(Double(time - baseTime) / Double(unitTime))) * unitFee: baseFee
+
+            if let index = feeList.firstIndex(where: { $0.number == item.number }) {
+                feeList[index].fee = fee
+            }
+        }
+        
+        feeList.sort { $0.number < $1.number}
+
+        for item in feeList {
+            ans.append(item.fee)
+        }
+
+        return ans
     }
-    ansBefore = ansBefore.sorted { $0.0 < $1.0 }
-    for i in ansBefore {
-        ans.append(i.1)
+
+
+    func timeInvert(_ data: String) -> String {
+        let data = data.split { $0 == ":" }.map { Int($0)! }
+        return String(data[0] * 60 + data[1])
     }
-    print(ans)
-    return ans
-}
-
-
-
-func hTom(_ date:String) -> Int {
-    let time = date.split { $0 == ":"}
-    return Int(time[0])! * 60 + Int(time[1])!
-}
