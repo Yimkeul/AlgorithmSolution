@@ -1,10 +1,10 @@
 # [level 3] 베스트앨범 - 42579 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42579?language=swift) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42579#qna) 
 
 ### 성능 요약
 
-메모리: 16.4 MB, 시간: 0.31 ms
+메모리: 16.5 MB, 시간: 0.70 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 08월 16일 05:52:06
+2025년 01월 24일 10:30:32
 
 ### 문제 설명
 
