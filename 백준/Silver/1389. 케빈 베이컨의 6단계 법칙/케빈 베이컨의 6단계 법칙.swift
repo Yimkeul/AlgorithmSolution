@@ -1,72 +1,36 @@
-//
-//  1389.swift
-//  solved
-//
-//  Created by yimkeul on 6/27/24.
-//
-
-import Foundation
-
-func Q_1389() {
-    struct Queue<T> {
-        var queue = [T]()
-        var index = 0
-
-        var isEmpty: Bool {
-            return queue.count - index == 0
-        }
-
-        mutating func push(_ e: T) {
-            queue.append(e)
-        }
-        mutating func pop() -> T {
-            defer {
-                index += 1
-            }
-            return queue[index]
-        }
-    }
-
-
-    let input = readLine()!.split { $0 == " " }.map { Int($0)! }
-    let (N, M) = (input[0], input[1])
-    var graph: [[Bool]] = Array(repeating: Array(repeating: false, count: N + 1), count: N + 1)
-
-
-
+    let NM = readLine()!.split { $0 == " " }.map { Int($0)! }
+    let (N, M) = (NM[0], NM[1])
+    
+    var graph = [[Int]](repeating: [], count: N + 1)
+    var kabins = [Int](repeating: 0, count: N)
     for _ in 0 ..< M {
-        let input = readLine()!.split { $0 == " " }.map { Int($0)! }
-        let (A, B) = (input[0], input[1])
-        graph[A][B] = true
-        graph[B][A] = true
+        let AB = readLine()!.split { $0 == " "}.map { Int($0)! }
+        let (A,B) = (AB[0], AB[1])
+        graph[A].append(B)
+        graph[B].append(A)
     }
-
-    func bfs(_ n: Int) -> Int {
-        var queue = Queue<(Int, Int)>()
-        var visited: [Bool] = Array(repeating: false, count: N + 1)
-        var cnt = 0
-        queue.push((n, 0))
-        visited[n] = true
+    
+    func bfs(_ start: Int, _ visited: inout [Bool]) -> [Int] {
+        var queue: [(Int,Int)] = [(start, 0)]
+        var depths = [Int](repeating: 0, count : N + 1)
+        visited[start] = true
         while !queue.isEmpty {
-            let now = queue.pop()
-            cnt += now.1
-            for i in 1 ... N {
-                if graph[now.0][i] && !visited[i] {
-                    queue.push((i, now.1 + 1))
-                    visited[i] = true
+            let (node, depth) = queue.removeFirst()
+            for n in graph[node] {
+                if !visited[n] {
+                    visited[n] = true
+                    depths[n] = depth + 1
+                    queue.append((n, depth + 1))
                 }
             }
         }
-        return cnt
-    }
-
-    var result: [Int] = Array(repeating: Int.max, count: N + 1)
-    for i in 1 ... N {
-        result [i] = bfs(i)
+        return depths
     }
     
-    print(result.firstIndex(of: result.min()!)!)
-
-
-}
-let _ = Q_1389()
+    for i in 1 ... N {
+        var visited = [Bool](repeating: false, count: N + 1)
+        kabins[i - 1] = bfs(i, &visited).reduce(0,+)
+    }
+    
+    let minValue = kabins.min()!
+    print(kabins.firstIndex { $0 == minValue }! + 1)
