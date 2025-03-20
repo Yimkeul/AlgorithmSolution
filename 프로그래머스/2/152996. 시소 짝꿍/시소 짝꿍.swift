@@ -1,32 +1,26 @@
 import Foundation
+
 func solution(_ weights:[Int]) -> Int64 {
-    
-    var dict = [Double:Int]()
-    
-    for weight in weights {
-        dict[Double(weight), default: 0] += 1
+    var result: Int64 = 0
+    var countMap = [Double: Int]()
+    let ratios = [2.0/3.0, 2.0/4.0, 3.0/4.0]
+
+    for i in weights {
+        countMap[Double(i), default: 0] += 1
     }
-    print(dict)
-    
-    var ans = 0
-    
-    for key in dict.keys {
-        if dict[key]! > 1 {
-            ans += dict[key]! * (dict[key]! - 1) / 2
+
+    for (weight, count) in countMap.sorted(by: { $0.key > $1.key }) {
+        if count > 1 {
+            result += Int64(count * (count - 1) / 2)
         }
-        
-        if dict[key * 2/3] != nil {
-            ans += dict[key]! * dict[key * 2/3]!
-        }
-        
-        if dict[key * 2/4] != nil {
-            ans += dict[key]! * dict[key * 2/4]!
-        }
-        
-        if dict[key * 3/4] != nil {
-            ans += dict[key]! * dict[key * 3/4]!
+
+        for ratio in ratios {
+            let target = Double(weight) * ratio
+            if let targetCount = countMap[target] {
+                result += Int64(count * targetCount)
+            }
         }
     }
-    
-    return Int64(ans)
+
+    return result
 }
