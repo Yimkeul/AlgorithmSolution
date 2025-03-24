@@ -1,7 +1,33 @@
 import Foundation    
 
 func solution(_ operations: [String]) -> [Int] {
-        var queue = [Int]()
+//     var queue = [Int]()
+    
+//     for op in operations {
+//         let input = op.split { $0 == " "}.map { String($0) }
+//         let operation = input[0]
+//         let value = Int(input[1])!
+//         if operation == "I" {
+//             queue.append(value)
+//         } else {
+//             if value == 1 {
+//                 if let index = queue.firstIndex { $0 == queue.max()! } {
+//                     queue.remove(at: index)                    
+//                 }
+                
+//             } else {
+//                 if let index = queue.firstIndex { $0 == queue.min()! } {
+//                         queue.remove(at: index)    
+//                 }
+//             }
+//         }
+//     }
+
+    
+//     return queue.isEmpty ? [0,0] : [queue.max()!, queue.min()!]
+    
+    
+            var queue = [Int]()
 
         for oper in operations {
             let line = oper.split { $0 == " " }.map { String($0) }
@@ -26,4 +52,17 @@ func solution(_ operations: [String]) -> [Int] {
             }
         }
         return queue.isEmpty ? [0, 0] : [queue.max()!, queue.min()!]
-    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
