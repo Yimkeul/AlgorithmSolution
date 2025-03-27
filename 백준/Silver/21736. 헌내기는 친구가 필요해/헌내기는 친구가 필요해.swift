@@ -1,35 +1,30 @@
 let NM = readLine()!.split { $0 == " " }.map { Int($0)! }
     let (N, M) = (NM[0], NM[1])
-
+    
     let directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
 
-    var graph = [[String]](repeating: [], count: N)
+    var graph = [[String]]()
     var visited = [[Bool]](repeating: [Bool](repeating: false, count: M), count: N)
+    var start = (0, 0) // "I"의 시작 위치
 
-    for i in 0 ..< N {
+    for i in 0..<N {
         let input = readLine()!.map { String($0) }
-        graph[i] = input
-    }
-
-    func findI() -> (Int, Int) {
-        for i in 0 ..< N {
-            for j in 0 ..< M {
-                if graph[i][j] == "I" {
-                    return (i, j)
-                }
-            }
+        graph.append(input)
+        if let j = input.firstIndex(of: "I") {
+            start = (i, j)
         }
-        return (0, 0)
     }
 
-
-    func bfs(_ xy: (Int,Int)) {
-        var queue = [xy]
-        visited[xy.0][xy.1] = true
+    func bfs(_ x: Int, _ y: Int) {
+        var queue = [(x, y)]
+        var front = 0
+        visited[x][y] = true
         var meetCount = 0
 
-        while !queue.isEmpty {
-            let (qx, qy) = queue.removeFirst()
+        while front < queue.count { // `removeFirst()` 대체 (O(1) 성능)
+            let (qx, qy) = queue[front]
+            front += 1
+            
             for (dx, dy) in directions {
                 let (nx, ny) = (qx + dx, qy + dy)
                 if nx >= 0, nx < N, ny >= 0, ny < M {
@@ -38,7 +33,7 @@ let NM = readLine()!.split { $0 == " " }.map { Int($0)! }
                             meetCount += 1
                         }
                         visited[nx][ny] = true
-                        queue.append((nx,ny))
+                        queue.append((nx, ny))
                     }
                 }
             }
@@ -46,4 +41,4 @@ let NM = readLine()!.split { $0 == " " }.map { Int($0)! }
         print(meetCount == 0 ? "TT" : meetCount)
     }
     
-    bfs(findI())
+    bfs(start.0, start.1)
