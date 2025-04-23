@@ -1,5 +1,60 @@
 import Foundation
 
+func solution(_ queue1:[Int], _ queue2:[Int]) -> Int {
+    
+    var q1 = queue1[queue1.indices]
+    var q2 = queue2[queue2.indices]
+    
+    var q1Sum = q1.reduce(0,+)
+    var q2Sum = q2.reduce(0,+)
+    
+    let targetSum = (q1Sum + q2Sum) / 2
+    var count = 0
+    
+    while !q1.isEmpty && !q2.isEmpty {
+        if q1Sum == targetSum {
+            return count
+        }
+        if q1Sum < targetSum {
+            // let pop = q2.removeFirst()
+            let pop = q2.popFirst()!
+            q1Sum += pop
+            q1.append(pop)
+        } else {
+            // let pop = q1.removeFirst()
+            // q2.append(pop)
+            q1Sum -= q1.popFirst()!
+        }
+        count += 1
+        
+    }
+    
+    return -1
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // func solution(_ queue1:[Int], _ queue2:[Int]) -> Int {
 //     let array: [Int] = queue1 + queue2
 //     // queue1 의 좌우 포인터.
@@ -44,25 +99,25 @@ import Foundation
 //     return answer
 // }
 
-func solution(_ queue1: [Int], _ queue2: [Int]) -> Int {
-    var count = 0
-    var queue1Sum = queue1.reduce(0, +)
-    let halfTotal = (queue1Sum + queue2.reduce(0, +)) / 2
-    var mutableQueue1 = queue1[queue1.indices]
-    var mutableQueue2 = queue2[queue2.indices]
+// func solution(_ queue1: [Int], _ queue2: [Int]) -> Int {
+//     var count = 0
+//     var queue1Sum = queue1.reduce(0, +)
+//     let halfTotal = (queue1Sum + queue2.reduce(0, +)) / 2
+//     var mutableQueue1 = queue1[queue1.indices]
+//     var mutableQueue2 = queue2[queue2.indices]
 
-    while !mutableQueue1.isEmpty && !mutableQueue2.isEmpty {
-        guard queue1Sum != halfTotal else {
-            return count
-        }
-        count += 1
-        if queue1Sum < halfTotal {
-            let first = mutableQueue2.popFirst()!
-            queue1Sum += first
-            mutableQueue1.append(first)
-        } else {
-            queue1Sum -= mutableQueue1.popFirst()!
-        }
-    }
-    return -1
-}
+//     while !mutableQueue1.isEmpty && !mutableQueue2.isEmpty {
+//         guard queue1Sum != halfTotal else {
+//             return count
+//         }
+//         count += 1
+//         if queue1Sum < halfTotal {
+//             let first = mutableQueue2.popFirst()!
+//             queue1Sum += first
+//             mutableQueue1.append(first)
+//         } else {
+//             queue1Sum -= mutableQueue1.popFirst()!
+//         }
+//     }
+//     return -1
+// }
