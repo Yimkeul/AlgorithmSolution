@@ -1,57 +1,36 @@
 import Foundation
 
-
-func makeDate(year:Int, month:Int, day:Int) -> Date {
-    let calendar = Calendar.current
-    var dateComponents = DateComponents()
-    dateComponents.year = year
-    dateComponents.month = month
-    dateComponents.day = day
-    let date = calendar.date(from: dateComponents)!
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy.MM.dd"
-    let formattedDate = dateFormatter.string(from: date)
-    // print("Formatted Date: \(formattedDate)")
-    return date
-}
-
 func solution(_ today:String, _ terms:[String], _ privacies:[String]) -> [Int] {
-    var ans:[Int] = []
-    let todayData = today.split { $0 == "." }
-    let (todayY, todayM, todayD) = (Int(todayData[0])!, Int(todayData[1])!, Int(todayData[2])!)
-    // print("TT")
-    let TT =  makeDate(year:todayY, month:todayM, day: todayD)
-    var index = 1
+    var termsDic = [String:Int]()
     
-    
-    for i in privacies { 
-        let privacyD = i.split(separator: " ")
-        let (day, ptype) = (privacyD[0], privacyD[1])
-        
-        let targetDay = day.split {$0 == "."}
-        var (targetY, targetM, targetD) = (Int(targetDay[0])!, Int(targetDay[1])!, Int(targetDay[2])!)
- 
-        for j in terms {
-            let termD = j.split { $0 == " " }
-            let (type, term) = (termD[0], Int(termD[1])!)
-            if ptype == type {
-                if targetM + term > 12 {
-                    let temp = targetM + term - 12
-                    targetY += 1
-                    targetM = temp
-                } else {
-                    targetM += term
-                }
-                // print("TARD, \(ptype), \(type), \(targetY).\(targetM).\(targetD)")
-                let TarD = makeDate(year:targetY, month: targetM, day: targetD)
-                if TT >= TarD {
-                    ans.append(index)
-                }
-            }
-        }
-        
-        index += 1
+    for term in terms {
+        let parts = term.split { $0 == " "}.map { String($0) }
+        let type = parts[0], month = Int(parts[1])!
+        termsDic[type] = month
     }
     
-    return ans
+    func dateType(_ date: String) -> Int {
+        let parts = date.split{$0 == "."}.map {Int($0)!}
+        let year = parts[0], month = parts[1], day = parts[2]
+        return (year * 12 * 28) + (month * 28) + day
+    }
+    
+    let today = dateType(today)
+    var answer = [Int]()
+    
+    
+    for (i, privacy) in privacies.enumerated() {
+        let parts = privacy.split { $0 == " "}.map { String($0) }
+        let collectedDate = parts[0]
+        let termType = parts[1]
+        
+        let expireDays = dateType(collectedDate) + (termsDic[termType]! * 28) - 1
+        
+        if expireDays < today {
+            answer.append(i + 1)
+        }
+    }
+    
+
+    return answer
 }
