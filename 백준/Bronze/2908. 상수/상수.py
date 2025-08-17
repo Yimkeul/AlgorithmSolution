@@ -1,0 +1,5 @@
+a, b = map(int, input().split())
+ra = int(str(a)[::-1])
+rb = int(str(b)[::-1])
+maxValue = max(ra, rb)
+print(maxValue)
