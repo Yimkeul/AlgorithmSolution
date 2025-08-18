@@ -1,7 +1,9 @@
-n = int(input())
+import sys
+readline = sys.stdin.readline
 
-r = n//4
-ss = ''
-for i in range(r):
-    ss += 'long '
-print(ss+'int')
+n = int(readline())
+longCnt = n // 4
+alpa = 0 if n % 4 == 0 else 1
+total = longCnt + alpa
+print("long " * total, end="")
+print("int")
