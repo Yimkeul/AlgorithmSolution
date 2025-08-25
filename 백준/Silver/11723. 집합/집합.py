@@ -1,39 +1,57 @@
 import sys
-input = sys.stdin.readline
 
-M = int(input())
-S = set()
+
+readline = sys.stdin.readline
+
+M = int(readline())
+s = set()
+
+
+def add(x):
+    s.add(x)
+
+
+def remove(x):
+    if x in s:
+        s.remove(x)
+
+
+def check(x):
+    if x in s:
+        print(1)
+    else:
+        print(0)
+
+
+def toggle(x):
+    if x in s:
+        s.remove(x)
+    else:
+        s.add(x)
+
+
+def all():
+    global s
+    s = set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+             12, 13, 14, 15, 16, 17, 18, 19, 20])
+
+
+def empty():
+    global s
+    s = set()
+
 
 for _ in range(M):
-    com = input().split()
-
-    if len(com) == 1:
-        com0 = com[0]
-    else:
-        com0,com1 = com
-
-    if com0 == "add":
-        S.add(int(com1))
-
-    elif com0 == "remove":
-        if int(com1) in S:
-            S.remove(int(com1))
-
-    elif com0 == "check":
-        if int(com1) in S:
-            print(1)
-        else:
-            print(0)
-
-    elif com0 == "toggle":
-        if int(com1) in S:
-            S.remove(int(com1))
-        else:
-            S.add(int(com1))
-
-    elif com0 == "all":
-        S = {1,2,3,4,5,6,7,8,9,10,
-             11,12,13,14,15,16,17,18,19,20}
-
-    else:
-        S.clear()
+    input = list(readline().split())
+    if input[0] == "add":
+        add(int(input[1]))
+    elif input[0] == "remove":
+        remove(int(input[1]))
+    elif input[0] == "check":
+        check(int(input[1]))
+    elif input[0] == "toggle":
+        toggle(int(input[1]))
+    elif input[0] == "all":
+        all()
+    elif input[0] == "empty":
+        empty()
