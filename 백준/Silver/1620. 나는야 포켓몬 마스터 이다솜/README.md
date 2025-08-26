@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 92144 KB, 시간: 216 ms
+메모리: 51528 KB, 시간: 208 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2025년 8월 26일 12:39:27
+2025년 8월 26일 16:27:27
 
 ### 문제 설명
 
@@ -50,11 +50,11 @@
 
 <p>이다솜 : 네. 야호!!</p>
 
-<p>'<img alt="" src="" style="height:181px; width:274px"></p>
+<p>'<img alt="" src="https://www.acmicpc.net/upload/201004/p3.PNG" style="height:181px; width:274px"></p>
 
 <p>오영식 : 어? 오박사님 얘는 누구인가요?</p>
 
-<p><img alt="" src="" style="height:182px; width:274px"></p>
+<p><img alt="" src="https://www.acmicpc.net/upload/201004/p4.PNG" style="height:182px; width:274px"></p>
 
 <p>오박사 : 얘는 너의 라이벌이 될 친구 이다솜이라고 하네. 자, 포켓몬을 한 마리 골라보도록 해봐라 다솜아. 레이디퍼스트 네가 먼저 골라봐라.</p>
 
