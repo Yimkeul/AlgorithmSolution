@@ -1,11 +1,9 @@
-n = int(input())
-data = list(map(int,input().split()))
-
-data.sort()
-result = data[0]
-for i in range(1,len(data)):
-    data[i] +=data[i-1]
-    result += data[i]
-
-print(result)
-    
+import sys
+readLine = sys.stdin.readline
+n = int(readLine())
+time = sorted(list(map(int, readLine().split())))
+# print(time)
+for i in range(1, len(time)):
+    time[i] = time[i] + time[i - 1]
+# print(time)
+print(sum(time))
