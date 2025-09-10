@@ -1,53 +1,42 @@
-func Q_1012() {
-    let T = Int(readLine()!)!
-    for _ in 0 ..< T {
-        let ans = sol()
+    let t = Int(readLine()!)!
+
+    let directions = [
+        (1, 0), (-1, 0), (0, 1), (0, -1)
+    ]
+
+    for _ in 0..<t {
+        let MNK = readLine()!.split { $0 == " " }.map { Int($0)! }
+
+        var grid = Array(repeating: Array(repeating: 0, count: MNK[0]), count: MNK[1])
+        var ans = 0
+
+
+
+        for _ in 0..<MNK[2] {
+            let XY = readLine()!.split { $0 == " " }.map { Int($0)! }
+            grid[XY[1]][XY[0]] = 1
+        }
+
+        for i in 0..<MNK[1] {
+            for j in 0..<MNK[0] {
+                if grid[i][j] == 1 {
+                    dfs(i, j, &grid, MNK[1], MNK[0])
+                    ans += 1
+                }
+            }
+        }
         print(ans)
     }
-}
 
-private func sol() -> Int {
-    var answer = 0
-    let input = readLine()!.split { $0 == " "}.map {Int($0)!}
-    let (M, N, K) = (input[0], input[1], input[2])
-    var graph: [[Int]] = Array(repeating: Array(repeating:0 , count:M), count: N)
-    for _ in 0 ..< K {
-        let position = readLine()!.split { $0 == " "}.map {Int($0)!}
-        graph[position[1]][position[0]] = 1
-        
-    }
-    
-    for y in 0 ..< N {
-        for x in 0 ..< M {
-            if graph[y][x] == 1 {
-                dfs(y,x, &graph)
-                answer += 1
+    func dfs(_ y: Int, _ x: Int, _ grid: inout [[Int]], _ maxY: Int, _ maxX: Int) {
+        if grid[y][x] == 1 {
+            grid[y][x] = 0 // visited 역할
+            for (dx, dy) in directions {
+                let nx = x + dx
+                let ny = y + dy
+                if nx >= 0, nx < maxX, ny >= 0, ny < maxY {
+                    dfs(ny, nx, &grid, maxY, maxX)
+                }
             }
         }
     }
-    
-     
-    return answer
-}
-private func dfs(_ y: Int, _ x: Int, _ graph: inout[[Int]]) {
-   let dx:[Int] = [1, 0, -1, 0]
-   let dy:[Int] = [0, 1, 0, -1]
-   let h = graph.count
-   let w = graph[0].count
-   if graph[y][x] == 1 {
-       // 방문처리
-       graph[y][x] = 0
-       for i in 0 ..< 4 {
-           let ny = y + dy[i]
-           let nx = x + dx[i]
-           if ny >= 0 && ny < h && nx >= 0 && nx < w {
-               if graph[ny][nx] == 1 {
-                   dfs(ny, nx, &graph)
-               }
-           }
-       }
-       
-   }
-}
-
-let _ = Q_1012()
