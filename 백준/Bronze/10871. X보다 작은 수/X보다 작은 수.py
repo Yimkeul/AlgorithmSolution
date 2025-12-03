@@ -1,6 +1,7 @@
-_, x = list(map(int,input().split()))
-a = list(map(int,input().split()))
+import sys
 
-for i in a:
-    if i < x:
-        print(i,end = " ")
+readLine = sys.stdin.readline
+n, x = map(int, readLine().split())
+nums = map(int, readLine().split())
+filter = [i for i in nums if i < x]
+print(*filter)
