@@ -1,6 +1,8 @@
+import sys
+
+readLine = sys.stdin.readline
 while True:
-    a , b = list(map(int,input().split()))
-    if a == 0 and b == 0:
+    a, b = map(int, readLine().split())
+    if (a, b) == (0, 0):
         break
-    else :
-        print(a+b)
+    print(a + b)
