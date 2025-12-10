@@ -1,11 +1,9 @@
-H , M = list(map(int,input().split(" ")))
-if H == 0:
-    H+=24
-H *= 60
-total = H+M-45
-H = total//60
-M = total%60
-if H>=24:
-    H -=24
-print(H,M)
+import sys
 
+readLine = sys.stdin.readline
+h, m = map(int, readLine().split())
+tm = h * 60 + m - 45
+ah = tm // 60 if tm >= 0 else 23
+am = tm % 60
+
+print(ah, am)
