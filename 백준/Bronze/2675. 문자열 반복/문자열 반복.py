@@ -1,9 +1,10 @@
-T = int(input())
+import sys
+
+readLine = sys.stdin.readline
+T = int(readLine())
 for _ in range(T):
-    data = list(input().split(" "))
-    num = int(data[0])
-    ans =""
-    for i in data[1]:
-        ans += i*num
-    print(ans)
-    
+    n, S = readLine().split()
+    result = ""
+    for s in range(len(S)):
+        result += S[s] * int(n)
+    print(result)
