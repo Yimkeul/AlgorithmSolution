@@ -1,20 +1,14 @@
-def isAscending (arr):
-    for i in range(len(arr)-1):
-        if arr[i] != arr[i+1] -1:
-            return False
-    return True
+import sys
 
-def isDescending (arr):
-    for i in range(len(arr)-1):
-        if arr[i] -1 != arr [i+1]:
-            return False
-    return True
-        
-arr = list(map(int,input().split()))
+readLine = sys.stdin.readline
+melody = list(map(int, readLine().split()))
 
-if isAscending(arr):
+a_c = sorted(melody)
+d_c = sorted(melody, reverse=True)
+
+if a_c == melody:
     print("ascending")
-elif isDescending(arr):
+elif d_c == melody:
     print("descending")
 else:
     print("mixed")
