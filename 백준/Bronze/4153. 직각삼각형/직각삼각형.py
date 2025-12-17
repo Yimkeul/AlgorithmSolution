@@ -1,19 +1,21 @@
-def check(a,b,c):
-    isA = 0
-    isB = 0
-    isC = 0
-    if a**2 + b**2 != c**2:
-        isC = 1
-    if b**2 + c**2 != a**2:
-        isA = 1
-    if a**2 + c**2 != b**2:
-        isB = 1
-    if isA + isB + isC == 3:
-        return print("wrong")
-    return print("right")
+import sys
 
+readLine = sys.stdin.readline
 while True:
-    a,b,c = list(map(int,input().split()))
-    if a == 0 and b == 0 and c == 0 :
+    a, b, c = list(map(int, readLine().split()))
+    z = max(a, b, c)
+    x, y = (0, 0)
+    if z == a:
+        x, y = (b, c)
+    elif z == b:
+        x, y = (a, c)
+    else:
+        x, y = (a, b)
+
+    if (a, b, c) == (0, 0, 0):
         break
-    check(a,b,c)
+
+    if z**2 == x**2 + y**2:
+        print("right")
+    else:
+        print("wrong")
