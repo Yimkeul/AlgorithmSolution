@@ -12,4 +12,4 @@ def trasnfor(a: str) -> int:
 result = 0
 for i in range(len(alpha)):
     result += trasnfor(alpha[i]) * 31**i
-print(result)
+print(result % 1234567891)
