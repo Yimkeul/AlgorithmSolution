@@ -1,12 +1,15 @@
-_ = int(input())
-apt = list(input())
+import sys
 
-cnt = 0
-sum = 0
-for i in apt:
-    sum += ord(i)%32 * 31 ** cnt
-    cnt += 1
-print(sum)
-    
+readLine = sys.stdin.readline
+L = int(readLine())
+alpha = readLine().rstrip()
 
-    
+
+def trasnfor(a: str) -> int:
+    return ord(a) - 96
+
+
+result = 0
+for i in range(len(alpha)):
+    result += trasnfor(alpha[i]) * 31**i
+print(result)
