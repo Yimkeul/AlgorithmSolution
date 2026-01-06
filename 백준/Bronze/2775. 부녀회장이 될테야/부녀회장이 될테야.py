@@ -1,15 +1,17 @@
-def _2775 (k,n):
-    f0 = [x for x in range(1, n+1)]
-    for _ in range(k):
-        for j in range(1,n):
-            f0[j] += f0[j-1]
-    return f0[-1]
+import sys
 
-    
+readLine = sys.stdin.readline
+T = int(readLine().strip())
+for _ in range(T):
+    k = int(readLine().strip())  # 층
+    n = int(readLine().strip())  # 호
 
-T = int(input())
-for i in range(T):
-    k = int(input())
-    n = int(input())
-    print(_2775(k,n))
+    apart = [[0 for _ in range(n + 1)] for _ in range(k + 1)]
+    apart[0] = [i for i in range(0, n + 1)]
+    for i in range(1, k + 1):
+        apart[i][0] = 0
+        apart[i][1] = 1
+        for j in range(2, n + 1):
+            apart[i][j] = apart[i][j - 1] + apart[i - 1][j]
 
+    print(apart[k][n])
