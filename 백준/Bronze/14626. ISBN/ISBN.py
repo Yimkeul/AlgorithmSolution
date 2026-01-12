@@ -1,20 +1,18 @@
 import sys
+
 readLine = sys.stdin.readline
-isbn = readLine()
 
+ISBN = readLine().strip()
 total = 0
-
-multi = 0
+index = 0
 
 for i in range(13):
-    if isbn[i] == "*":
-        multi = 1 if i % 2 == 0 else 3
-    elif i % 2 == 0:
-        total += int(isbn[i])
-    elif i % 2 != 0:
-        total += 3 * int(isbn[i])
-# print(total, multi)
+    if ISBN[i] == "*":
+        index = 1 if i % 2 == 0 else 3
+    else:
+        total += int(ISBN[i]) * (1 if i % 2 == 0 else 3)
 
-for i in range(10):
-    if (total + (multi * i)) % 10 == 0:
-        print(i)
+for x in range(10):
+    if (total + index * x) % 10 == 0:
+        print(x)
+        break
