@@ -1,12 +1,9 @@
-n = int(input())
+import sys
+readline = sys.stdin.readline
+N = int(readline())
+ary = [readline().strip() for _ in range(N)]
+ary = list(set(ary))
 
-ary = set([])
-
-for i in range(n):
-    ary.add(input())
-
-newAry = list(ary)
-newAry2 = sorted(newAry, key=lambda x: (len(x), x))
-
-for i in newAry2:
+ary = sorted(ary, key = lambda x : (len(x),x))
+for i in ary:
     print(i)
